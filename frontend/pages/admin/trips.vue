@@ -5,7 +5,7 @@
           <h1 class="title">Управление походами</h1>
         </div>
         <div class="level-right">
-          <nuxt-link to="/admin/trips/new" class="button is-primary">
+          <nuxt-link to="/admin/new" class="button is-primary">
             Создать поход
           </nuxt-link>
         </div>
@@ -32,7 +32,7 @@
         <b-table-column label="Действия" v-slot="props">
           <div class="buttons">
             <nuxt-link 
-              :to="`/admin/trips/${props.row.id}`"
+              :to="`/admin/${props.row.id}`"
               class="button is-info is-small"
             >
               Редактировать

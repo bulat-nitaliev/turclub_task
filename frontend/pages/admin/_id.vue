@@ -80,7 +80,15 @@
   </template>
   
   <script>
-  import Trip from '@/models/Trip'
+import Trip from '@/models/Trip'
+import { extend } from "vee-validate";
+import { required} from "vee-validate/dist/rules";
+
+extend("required", {
+  ...required,
+  message: "Это поле обязательно",
+});
+
   
   export default {
     props: {
@@ -121,6 +129,8 @@
   
       async submit() {
         this.isSubmitting = true
+        console.log(this.form);
+        
         try {
           const formData = new FormData()
           Object.entries(this.form).forEach(([key, value]) => {

@@ -1,11 +1,9 @@
-import { Model } from 'vue-mc'
+import { Model, axios } from 'vue-mc'
 
-
+axios.baseUrl = 'http://localhost:8000';
 export default class Trip extends Model {
-  baseURL() {
-    return "http://localhost:8000"
-  }
-
+ 
+  
   defaults() {
     return {
       id: null,

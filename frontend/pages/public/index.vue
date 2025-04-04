@@ -29,12 +29,11 @@
 
 <script>
 import { debounce } from "lodash";
-import TripCard from '@/components/public/TripCard.vue'
-
+import TripCard from "@/components/public/TripCard.vue";
 
 export default {
-  components:{
-    TripCard
+  components: {
+    TripCard,
   },
   data() {
     return {
@@ -44,7 +43,7 @@ export default {
   },
   methods: {
     filteredTrips() {
-      this.trips.filter((t) =>
+      this.trips = this.trips.filter((t) =>
         t.title.toLowerCase().includes(this.searchQuery.toLowerCase())
       );
     },
