@@ -34,12 +34,14 @@ class ApplicationPublicViewSet(viewsets.ModelViewSet):
 from rest_framework.parsers import MultiPartParser, FormParser
 
 class TripPrivateViewSet(viewsets.ModelViewSet):
+    print('serializer.data')
     queryset = Trip.objects.all()
     serializer_class = TripSerializer
     permission_classes = [permissions.IsAuthenticated]
     parser_classes = (MultiPartParser, FormParser)  # Добавляем парсеры файлов
 
     def perform_create(self, serializer):
+        
         serializer.save(photo=self.request.FILES.get('photo'))
 
 

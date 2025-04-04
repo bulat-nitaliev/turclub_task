@@ -6,7 +6,7 @@ class Trip(models.Model):
     description = models.TextField()
     start_date = models.DateField()
     end_date = models.DateField()
-    photo = models.ImageField(upload_to='trips/')  # Изменили на ImageField
+    photo = models.ImageField(upload_to='trips/') 
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
