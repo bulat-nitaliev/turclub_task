@@ -79,7 +79,7 @@ export default {
           try {
             // const trip = new Trip({ id })
             // await trip.delete()
-            await this.$axios.delete(`private/trips/${id}/`)
+            await this.$axios.delete(`/api/v1/private/trips/${id}/`)
             
             // await new Trip({ id }).delete();
             await this.loadTrips();

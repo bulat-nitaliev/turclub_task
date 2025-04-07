@@ -47,7 +47,7 @@
                 :type="errors.length ? 'is-danger' : ''"
                 :message="errors"
               >
-                <b-datepicker v-model="form.start_date" />
+                <b-datepicker v-model="form.start_date" :locale="locale" editable/>
               </b-field>
             </ValidationProvider>
           </div>
@@ -65,6 +65,7 @@
               >
                 <b-datepicker v-model="form.end_date" />
               </b-field>
+            
             </ValidationProvider>
           </div>
         </div>
@@ -93,6 +94,7 @@
             type="submit"
             class="button is-primary"
             :disabled="isSubmitting"
+            @click="submit"
           >
             Сохранить
           </button>
@@ -105,6 +107,7 @@
 
 <script>
 import Trip from "@/models/Trip";
+import { locale } from "core-js";
 import { extend } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
 
@@ -130,15 +133,16 @@ export default {
         end_date: new Date(),
         photo: null,
       },
+      locale: "en-CA",
       isSubmitting: false,
     };
   },
 
-  async mounted() {
-    if (this.tripId) {
-      await this.loadTrip();
-    }
-  },
+  // async mounted() {
+  //   if (this.tripId) {
+  //     await this.loadTrip();
+  //   }
+  // },
 
   methods: {
     async loadTrip() {
@@ -155,15 +159,20 @@ export default {
 
     async submit() {
       this.isSubmitting = true;
-      console.log(this.form);
 
       try {
         const formData = new FormData();
         Object.entries(this.form).forEach(([key, value]) => {
           if (key === "photo" && value instanceof File) {
             formData.append(key, value, value.name);
-          } else {
-            formData.append(key, value);
+          } else if (key === "start_date") {
+            
+            formData.append(key, value.toISOString().split('T')[0].replace(/-/g, '-'));
+          } else if (key === "end_date") {
+            
+            formData.append(key, value.toISOString().split('T')[0].replace(/-/g, '-'));
+          }else{
+            formData.append(key, value)
           }
         });
 
@@ -171,7 +180,14 @@ export default {
           // await new Trip({ id: this.tripId }).update(formData)
           await this.$axios.put(`/api/v1/private/trips/${this.tripId}/`);
         } else {
-          await this.$axios.post(`/api/v1/private/trips/`, formData);
+          console.log(formData);
+          const headers = {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          };
+          
+          await this.$axios.post(`/api/v1/private/trips/`, formData, headers);
         }
 
         this.$router.push("/admin/trips");
@@ -180,7 +196,6 @@ export default {
       }
       this.isSubmitting = false;
     },
-
     showError(message) {
       this.$buefy.toast.open({
         message,

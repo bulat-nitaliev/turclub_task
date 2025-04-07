@@ -2,7 +2,7 @@
     <div class="trip-card box">
       <figure class="image is-4by3">
         <img 
-          :data-src="trip.photo" 
+          :src="trip.photo" 
           class="lazyload" 
           alt="Trip photo"
         >

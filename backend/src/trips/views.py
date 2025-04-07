@@ -41,7 +41,7 @@ class TripPrivateViewSet(viewsets.ModelViewSet):
     parser_classes = (MultiPartParser, FormParser)  # Добавляем парсеры файлов
 
     def perform_create(self, serializer):
-        
+        print(self.request.FILES.get('photo'))
         serializer.save(photo=self.request.FILES.get('photo'))
 
 
