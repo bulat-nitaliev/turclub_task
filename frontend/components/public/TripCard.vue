@@ -9,7 +9,7 @@
       </figure>
       <h3 class="title is-5 mt-3">{{ trip.title }}</h3>
       <nuxt-link 
-        :to="`/public/${trip.id}`" 
+        :to="`/${trip.id}`" 
         class="button is-primary is-fullwidth mt-3"
       >
         Перейти

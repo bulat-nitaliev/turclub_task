@@ -11,15 +11,17 @@ class Command(BaseCommand):
         
         # Удаляем существующие данные
         Trip.objects.all().delete()
+        lst = ['trips/Без названия.jpg', 'trips/ber.jpg', 'trips/fam.jpg',
+         'trips/images.jpg','trips/ni.jpg','trips/see.jpg',]
         
         # Создаем 10 походов
-        for i in range(1, 11):
+        for i in lst:
             trip = Trip.objects.create(
                 title=fake.sentence(nb_words=4),
                 description=fake.paragraph(nb_sentences=5),
                 start_date=fake.future_date(end_date=30),
                 end_date=fake.future_date(end_date=60),
-                photo=f'https://picsum.photos/seed/{i}/600/400'
+                photo=i
             )
             
             # Создаем 0-5 заявок для похода

@@ -1,81 +1,99 @@
 <template>
-    <div class="container">
-      <div class="columns is-centered">
-        <div class="column is-4">
-          <div class="box">
-            <h1 class="title has-text-centered">Авторизация</h1>
-  
-            <ValidationObserver v-slot="{ handleSubmit }">
-              <form @submit.prevent="handleSubmit(login)">
-                <ValidationProvider name="Логин" rules="required" v-slot="{ errors }">
-                  <b-field 
-                    label="Логин"
-                    :type="errors.length ? 'is-danger' : ''"
-                    :message="errors"
-                  >
-                    <b-input v-model="form.username" />
-                  </b-field>
-                </ValidationProvider>
-  
-                <ValidationProvider name="Пароль" rules="required" v-slot="{ errors }">
-                  <b-field
-                    label="Пароль"
-                    :type="errors.length ? 'is-danger' : ''"
-                    :message="errors"
-                  >
-                    <b-input v-model="form.password" type="password" />
-                  </b-field>
-                </ValidationProvider>
-  
-                <b-button 
-                  native-type="submit" 
-                  type="is-primary" 
-                  expanded
-                  :loading="isLoading"
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-4">
+        <div class="box">
+          <h1 class="title has-text-centered">Авторизация</h1>
+
+          <ValidationObserver v-slot="{ handleSubmit }">
+            <form @submit.prevent="handleSubmit(login)">
+              <ValidationProvider
+                name="Логин"
+                rules="required"
+                v-slot="{ errors }"
+              >
+                <b-field
+                  label="Логин"
+                  :type="errors.length ? 'is-danger' : ''"
+                  :message="errors"
                 >
-                  Войти
-                </b-button>
-              </form>
-            </ValidationObserver>
-          </div>
+                  <b-input v-model="form.username" />
+                </b-field>
+              </ValidationProvider>
+
+              <ValidationProvider
+                name="Пароль"
+                rules="required"
+                v-slot="{ errors }"
+              >
+                <b-field
+                  label="Пароль"
+                  :type="errors.length ? 'is-danger' : ''"
+                  :message="errors"
+                >
+                  <b-input v-model="form.password" type="password" />
+                </b-field>
+              </ValidationProvider>
+
+              <b-button
+                native-type="submit"
+                type="is-primary"
+                expanded
+                :loading="isLoading"
+              >
+                Войти
+              </b-button>
+            </form>
+          </ValidationObserver>
         </div>
       </div>
     </div>
-  </template>
-  
-<script>
-import { required } from 'vee-validate/dist/rules'
-import { extend } from 'vee-validate'
+  </div>
+</template>
 
-extend('required', {
+<script>
+import { required } from "vee-validate/dist/rules";
+import { extend } from "vee-validate";
+
+extend("required", {
   ...required,
-  message: 'Это поле обязательно'
-})
-  export default {
-    auth: 'guest',
-    data() {
-      return {
-        form: {
-          username: '',
-          password: ''
-        },
-        isLoading: false
-      }
-    },
-    methods: {
-      async login() {
-        this.isLoading = true
-        try {
-          await this.$auth.loginWith('local', { data: this.form })
-          this.$router.push('/admin/trips')
-        } catch (error) {
-          this.$buefy.toast.open({
-            message: 'Ошибка авторизации',
-            type: 'is-danger'
-          })
+  message: "Это поле обязательно",
+});
+export default {
+  auth: "guest",
+  data() {
+    return {
+      form: {
+        username: "",
+        password: "",
+      },
+      isLoading: false,
+    };
+  },
+  methods: {
+    async login() {
+      this.isLoading = true;
+      try {
+        await this.$auth.loginWith("local", { data: this.form });
+        await this.$auth.fetchUser();
+
+        console.log("Токен:", this.$auth.strategy.token.get());
+        console.log("Пользователь:", this.$auth.user);
+
+        
+        if (this.$auth.loggedIn) {
+          this.$router.push("/admin/trips");
+        } else {
+          console.error("Авторизация не прошла");
         }
-        this.isLoading = false
+      } catch (error) {
+        this.$buefy.toast.open({
+          message: "Ошибка авторизации",
+          type: "is-danger",
+        });
       }
-    }
-  }
-  </script>
+      this.isLoading = false;
+    },
+  },
+};
+</script>

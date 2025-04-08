@@ -138,11 +138,11 @@ export default {
     };
   },
 
-  // async mounted() {
-  //   if (this.tripId) {
-  //     await this.loadTrip();
-  //   }
-  // },
+  async mounted() {
+    if (this.tripId) {
+      await this.loadTrip();
+    }
+  },
 
   methods: {
     async loadTrip() {

@@ -15,7 +15,7 @@ class TripSerializer(serializers.ModelSerializer):
 
 
 
-class ApplicationSerializer(serializers.ModelSerializer):
+class ApplicationListSerializer(serializers.ModelSerializer):
     trip_title = serializers.SerializerMethodField()
     
     class Meta:
@@ -24,3 +24,9 @@ class ApplicationSerializer(serializers.ModelSerializer):
         
     def get_trip_title(self, obj):
         return obj.trip.title if obj.trip else None
+    
+
+class ApplicationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Application
+        fields = '__all__'
