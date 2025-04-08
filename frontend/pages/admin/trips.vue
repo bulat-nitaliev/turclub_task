@@ -49,6 +49,7 @@
 import Trip from "@/models/Trip";
 
 export default {
+  layout: 'admin',
   data() {
     return {
       trips: [],

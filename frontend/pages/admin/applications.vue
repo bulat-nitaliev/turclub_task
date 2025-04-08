@@ -19,6 +19,10 @@
         <b-table-column field="full_name" label="Имя" v-slot="props">
           {{ props.row.full_name }}
         </b-table-column>
+
+        <b-table-column field="trip.title" label="Телефон" v-slot="props">
+          {{ props.row.phone }}
+        </b-table-column>
   
         <b-table-column field="trip.title" label="Поход" v-slot="props">
           {{ props.row.trip_title }}
@@ -40,6 +44,7 @@
   import Application from '@/models/Application'
   
   export default {
+    layout:"admin",
     data() {
       return {
         applications: [],
@@ -65,9 +70,10 @@
   
       async updateStatus(application) {
         try {
-          await new Application({ id: application.id }).update({
-            is_canceled: application.is_canceled
-          })
+          // await new Application({ id: application.id }).update({
+          //   is_canceled: application.is_canceled
+          // })
+          await this.$axios.patch(`/api/v1/private/applications/${application.id}/` , {is_canceled: application.is_canceled})
         } catch (error) {
           this.showError('Ошибка обновления статуса')
         }
